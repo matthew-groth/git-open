@@ -17,8 +17,17 @@ fi
 
 
 # assume matt if not provided
-# fallback to upstream if neither is present.
+
 remote="matt"
+
+# fallback to upstream if neither is present.
+if [ -n "$1" ]; then
+  dummy=5
+else
+  remote=$(git remote) #TODO fix by making it only output upstream repo
+fi
+
+
 if [ -n "$1" ]; then
   if [ "$1" == "issue" ]; then
     currentBranch=$(git symbolic-ref -q --short HEAD)
