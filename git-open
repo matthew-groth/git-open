@@ -152,5 +152,52 @@ case $( uname -s ) in
 esac
 
 # open it in a browser
-$open "$giturl" &> /dev/null
+
+
+
+# $open "$giturl" &> /dev/null
+# refresh page instead of opening new tab if open
+osascript -e 'tell application "Google Chrome"
+  
+  set i to 0
+  
+  repeat with theTab in (every tab of every window)
+    
+    
+    set i to i + 1
+    set theURL to URL of theTab
+    
+    
+    if theURL is '"\"$giturl\""' then
+      set (active tab index of (window 1)) to i
+      activate
+      tell application "System Events" to keystroke "r" using {command down, shift down}
+      return -- "refreshed?"
+    else
+      -- log "nope: " & theURL & "is not " & ('"\"$giturl\""')
+    end if
+  end repeat
+  
+  open location '"\"$giturl\""'
+  
+  
+  set theURL to '"\"$giturl\""'
+  
+  return -- "opened?"
+  
+  
+  
+  --  if theURL is in (every tab of every window) then
+  --    return true
+  --  else
+  --    return "false: (" & theURL & "): " & (every tab of every window)
+  --  end if
+  
+  
+end tell'
+
+
+
+
+
 exit $?
